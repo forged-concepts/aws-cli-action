@@ -1,16 +1,23 @@
 ---
 name: "AWS CLI w/ jq for json parsing"
 author: "Jerry Warren <jerry@forged-concepts.com>"
-description: "Run AWS cli commands"
+description: "Run AWS cli commands which also supports assuming a role"
 
 inputs:
-  subcommand:
-    description: "the the argument to use when running aws cli command"
-    required: true
   workingdirectory:
     description: "a directory where the packer template lives"
     required: false
     default: "."
+  subcommand:
+    description: "the the argument to use when running aws cli command"
+    required: true
+  assumerole:
+    description: "a role to assume for cross role needs"
+    required: false
+  rolesessionname:
+    description: "a session name to use with assume role"
+    required: false
+    default: aws-cli-github-action
 
 runs:
   using: "docker"

@@ -1,9 +1,14 @@
-FROM python:alpine3.12
+FROM ubuntu:xenial-20200916
 
-ENV AWSCLI_VERSION='1.18'
+ENV AWSCLI_VERSION='2.0.59'
 
-RUN pip3 --no-cache-dir install awscli==${AWSCLI_VERSION}
-RUN apk add --no-cache jq
+RUN apt-get update && \
+  apt-get install -y curl jq unzip && \
+  apt-get clean
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWSCLI_VERSION}.zip" -o "awscliv2.zip" && \
+  unzip awscliv2.zip && \
+  ./aws/install
 
 COPY entrypoint.sh /entrypoint.sh
 

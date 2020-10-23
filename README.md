@@ -1,6 +1,6 @@
 # AWS CLI GitHub Action
 
-The Github action is used to run aws-cli commands, but also includes jq for parsing json files
+The Github action is used to run aws-cli commands, but also includes jq for parsing json files. This action also supports assuming a role
 
 ## Table Of Contents
 
@@ -8,8 +8,10 @@ The Github action is used to run aws-cli commands, but also includes jq for pars
   - [Table Of Contents](#table-of-contents)
   - [Usage](#usage)
     - [Inputs](#inputs)
-      - [`subcommand`](#subcommand)
       - [`workingdirectory`](#workingdirectory)
+      - [`subcommand`](#subcommand)
+      - [`assumerole`](#assumerole)
+      - [`rolesessionname`](#rolesessionname)
     - [Debugging](#debugging)
 
 ## Usage
@@ -49,10 +51,35 @@ jobs:
 
 ### Inputs
 
-| Name               | Description                                                 | Required | Default |
-| ------------------ | ----------------------------------------------------------- | -------- | ------- |
-| `subcommand`       | the the argument to use when running aws cli command        | true     |         |
-| `workingdirectory` | used to change the working directory of where to run packer | false    | `.`     |
+| Name               | Description                                                 | Required | Default               |
+| ------------------ | ----------------------------------------------------------- | -------- | --------------------- |
+| `workingdirectory` | used to change the working directory of where to run packer | false    | `.`                   |
+| `subcommand`       | the the argument to use when running aws cli command        | true     |                       |
+| `assumerole`       | a role to assume for cross role needs                       | false    |                       |
+| `rolesessionname`  | a session name to use with assume role                      | false    | aws-cli-github-action |
+
+
+workingdirectory:
+    description: "a directory where the packer template lives"
+    required: false
+    default: "."
+  subcommand:
+    description: "the the argument to use when running aws cli command"
+    required: true
+  assumerole:
+    description: "a role to assume for cross role needs"
+    required: false
+  rolesessionname:
+    description: "a session name if using assume role"
+    required: false
+
+#### `workingdirectory`
+
+`workingdirectory` is a string to change directory before running packer build.
+
+```yaml
+  workingdirectory: './packer'
+```
 
 #### `subcommand`
 
@@ -62,12 +89,20 @@ jobs:
     subcommand: s3 ls
 ```
 
-#### `workingdirectory`
+#### `assumerole`
 
-`workingdirectory` is a string to change directory before running packer build.
+`assumerole` is an iam role to assume when using cross role credentials
 
 ```yaml
-  workingdirectory: './packer'
+  assumerole: arn:aws:iam::123456789000:role/test-deployment-role
+```
+
+#### `rolesessionname`
+
+`rolesessionname` is a role name to use when assuming a role
+
+```yaml
+  rolesessionname: aws-cli-github-action
 ```
 
 ### Debugging
