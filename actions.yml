@@ -1,0 +1,21 @@
+---
+name: "AWS CLI w/ jq for json parsing"
+author: "Jerry Warren <jerry@forged-concepts.com>"
+description: "Run AWS cli commands"
+
+inputs:
+  subcommand:
+    description: "the the argument to use when running aws cli command"
+    required: true
+  workingdirectory:
+    description: "a directory where the packer template lives"
+    required: false
+    default: "."
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+
+branding:
+  icon: "package"
+  color: "gray-dark"
